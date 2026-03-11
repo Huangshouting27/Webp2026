@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myhello',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -121,16 +122,27 @@ STATIC_URL = 'static/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard' :{
+            'format' : '%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'
+        }
+    },
     'handlers': {
-        'file': {
+        'debug': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': './debug.log',
+            'formatter':'standard',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console', 'debug'],
             'level': 'DEBUG',
             'propagate': True,
         },
