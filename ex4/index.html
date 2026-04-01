@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function repeatchar(char, count) {
+            let str = "";
+            for (let i = 0; i < count; i++) {
+                str += char;
+            }
+            return str;
+        }
+
+        function printTreeTop(n) {
+            for (let i = 1; i <= n; i++) {
+                console.log(repeatchar(' ', n - i) + repeatchar('*', 2 * i - 1));
+            }
+        }
+
+        function printTreeBottom(n) {
+            for (let i = 0; i < 3; i++) {
+                console.log(repeatchar(' ', n - 1) + "*");
+            }
+        }
+
+        function tree(n) {
+            printTreeTop(n);
+            printTreeBottom(n);
+        }
+
+        // 執行函式
+        tree(4);
+    </script>
+</body>
+</html>
