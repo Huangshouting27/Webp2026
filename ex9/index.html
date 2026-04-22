@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flickr 照片牆 Lab#9</title>
+    <link rel="stylesheet" href="script.css">
+</head>
+<body>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="getimg()">GET img</button>
+    </div>
+
+    <div id="gallery" class="gallery"></div>
+
+    <script>
+        // 你的第一張圖：取得清單的 URL (任務委託書)
+        const apiKey = 'ca370d51a054836007519a00ff4ce59e';
+        const imglist_Url = `https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=${apiKey}&per_page=10&format=json&nojsoncallback=1`;
+
+        function getimg() {
+            // 第一匹馬：去領照片 ID 清單
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', imglist_Url, true);
+            xhr.send();
+            
+            xhr.onload = function() {
+                const data = JSON.parse(this.responseText);
+                // 拿到清單後，傳給下一步去處理
+                add_new_img(data.photos.photo);
+            };
+        }
+
+        function add_new_img(dataset) {
+            const gal = document.getElementById("gallery");
+            gal.innerHTML = ""; // 每次點擊先清空舊照片
+
+            dataset.forEach(function(item) {
+                // 為每一張照片 ID 派出一匹小馬去拿真實網址 (對應你的第二張圖)
+                const getSizeUrl = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=${apiKey}&photo_id=${item.id}&format=json&nojsoncallback=1`;
+                
+                const xhrSize = new XMLHttpRequest();
+                xhrSize.open('GET', getSizeUrl, true);
+                xhrSize.send();
+                
+                xhrSize.onload = function() {
+                    const sizeData = JSON.parse(this.responseText);
+                    // 從包裹中找到 "Small" 尺寸的網址 (source)
+                    const photo = sizeData.sizes.size.find(s => s.label === "Small") || sizeData.sizes.size[0];
+                    
+                    // 工匠現場釘相框
+                    const img = document.createElement("img");
+                    img.setAttribute("src", photo.source);
+                    
+                    // 掛上展示牆
+                    gal.appendChild(img);
+                };
+            });
+        }
+    </script>
+</body>
+</html>

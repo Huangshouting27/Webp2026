@@ -1,0 +1,52 @@
+/* 這是展示牆的設定 (對應 Page 17) */
+.gallery {
+    --g: 6px; /* 圖片之間的間距 */
+    display: grid;
+    width: 1200px;
+    max-width: 95%; /* 確保在小螢幕不會爆出去 */
+    margin: 30px auto;
+    aspect-ratio: 1; /* 維持正方形比例 */
+    grid: auto-flow 1fr / repeat(3, 1fr); /* 三欄佈局 */
+    gap: var(--g);
+}
+
+/* 每一張照片的預設樣子 */
+.gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 確保圖片填滿格子的同時不會變形 */
+    filter: grayscale(1); /* 預設黑白 */
+    transition: .5s; /* 變色的過渡時間 */
+    cursor: pointer;
+}
+
+/* 滑鼠移上去變彩色 */
+.gallery img:hover {
+    filter: grayscale(0);
+}
+
+/* Page 17 的特殊裁剪設計：第二張照片 */
+.gallery img:nth-child(2) {
+    grid-area: 1 / 2 / span 2 / span 2;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, calc(50% + var(--g)/4) 100%, 0 calc(50% - var(--g)/4));
+}
+
+/* Page 17 的特殊裁剪設計：第三張照片 */
+.gallery img:nth-child(3) {
+    grid-area: 2 / 1 / span 2 / span 2;
+    clip-path: polygon(0 0, calc(50% - var(--g)/4) 0, 100% calc(50% + var(--g)/4), 100% 100%, 0 100%);
+}
+
+/* 按鈕樣式（選配，讓它好看一點） */
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #555;
+}
